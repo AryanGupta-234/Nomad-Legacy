@@ -39,8 +39,6 @@ jobs:
             padding:0;
             min-height:0;
           }
-          /* The artist/search/tab chrome is a real reserved header row now.
-             It never paints over the lyric body while that body scrolls. */
           .lyrics-panel.fullscreen .lyrics-pinned-top{
             position:relative;
             top:auto;
@@ -94,8 +92,6 @@ jobs:
             max-width:none;
             margin:0;
           }
-          /* The player remains above the page, while the lyric body reserves
-             its full safe area so the final line can never hide behind it. */
           body:has(.lyrics-panel.fullscreen) .player-bar,
           body:has(.lyrics-panel.fullscreen) .player-container,
           body:has(.lyrics-panel.fullscreen) .bottom-player{z-index:1200;}
