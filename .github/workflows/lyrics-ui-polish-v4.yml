@@ -1,0 +1,75 @@
+name: Polish Lyrics chrome and player overlap
+
+on:
+  push:
+    branches: [agent/nomad-vnext-foundation]
+
+permissions:
+  contents: write
+
+jobs:
+  lyrics-polish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/nomad-vnext-foundation
+
+      - name: Apply in-place chrome polish
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('templates/index.html')
+          text = path.read_text(encoding='utf-8')
+          marker = '/* NOMAD Lyrics v4 — chrome, stacking and player-overlap polish. */'
+          if marker in text:
+              raise SystemExit(0)
+          css = r'''/* NOMAD Lyrics v4 — chrome, stacking and player-overlap polish. */
+          .lyrics-panel.fullscreen{isolation:isolate;overflow:hidden;}
+          .lyrics-panel.fullscreen .lyrics-panel-header{position:relative;z-index:30;min-height:58px;display:flex;align-items:center;gap:12px;padding:12px clamp(18px,3vw,34px);background:rgba(7,9,13,.88);border-bottom:1px solid rgba(255,255,255,.07);box-shadow:0 10px 35px rgba(0,0,0,.22);backdrop-filter:blur(24px) saturate(150%);}
+          .lyrics-panel.fullscreen .lyrics-panel-header>*{min-width:0;}
+          .lyrics-panel.fullscreen .lyrics-panel-body-row{position:relative;z-index:1;min-height:0;}
+          .lyrics-panel.fullscreen .lyrics-panel-inner{position:relative;z-index:2;min-width:0;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable;padding-bottom:240px;}
+          .lyrics-panel.fullscreen .lyrics-pinned-top{position:relative;z-index:10;isolation:isolate;}
+          .lyrics-panel.fullscreen .lyrics-pinned-top::after{content:'';position:absolute;left:0;right:0;bottom:-24px;height:24px;background:linear-gradient(180deg,rgba(6,8,12,.24),transparent);pointer-events:none;}
+          .lyrics-panel.fullscreen .lyrics-artist-rail,.lyrics-panel.fullscreen .lyrics-tabs,.lyrics-panel.fullscreen .lyrics-search-row{position:relative;z-index:2;}
+          .lyrics-panel.fullscreen .lyrics-tabs{scrollbar-width:none;}
+          .lyrics-panel.fullscreen .lyrics-tabs::-webkit-scrollbar{display:none;}
+          .lyrics-panel.fullscreen .lyrics-line{scroll-margin-top:190px;transition:color .25s ease,opacity .25s ease,transform .25s ease,text-shadow .25s ease;}
+          .lyrics-panel.fullscreen .lyrics-line.active{position:relative;z-index:3;}
+          .lyrics-panel.fullscreen .lyrics-fs-sidebar{position:relative;z-index:4;min-height:0;overflow:auto;padding-bottom:240px;}
+          .lyrics-panel.fullscreen .lyrics-fs-sidebar .sidebar-artist-panel{position:sticky;top:18px;}
+          .lyrics-panel.fullscreen .lyrics-panel-footer,.lyrics-panel.fullscreen .lyrics-footer{position:relative;z-index:25;}
+          /* Keep the global/floating player visually above the Lyrics chrome without covering readable content. */
+          .lyrics-panel.fullscreen~.player-bar,.lyrics-panel.fullscreen~#player-bar,.lyrics-panel.fullscreen~.now-playing-bar{z-index:1000;}
+          .lyrics-panel.fullscreen{padding-bottom:0;}
+          @media (max-width:900px){
+            .lyrics-panel.fullscreen .lyrics-panel-header{min-height:52px;padding:10px 16px;}
+            .lyrics-panel.fullscreen .lyrics-panel-inner{padding-bottom:205px;}
+            .lyrics-panel.fullscreen .lyrics-line{scroll-margin-top:150px;}
+          }
+          @media (max-width:640px){
+            .lyrics-panel.fullscreen .lyrics-panel-header{gap:8px;min-height:48px;padding:8px 12px;}
+            .lyrics-panel.fullscreen .lyrics-panel-inner{padding-bottom:185px;}
+            .lyrics-panel.fullscreen .lyrics-line{scroll-margin-top:125px;}
+          }
+          @media (prefers-reduced-motion:reduce){
+            .lyrics-panel.fullscreen .lyrics-line{transition:none;}
+          }
+          '''
+          css = '\n'.join(line[10:] if line.startswith('          ') else line for line in css.splitlines())
+          pos = text.find('</style>')
+          if pos < 0:
+              raise SystemExit('No closing style tag found')
+          text = text[:pos] + '\n  ' + css.replace('\n','\n  ') + '\n' + text[pos:]
+          path.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Commit polish
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add templates/index.html
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "feat(ui): polish lyrics chrome and player overlap"
+          git push origin agent/nomad-vnext-foundation
