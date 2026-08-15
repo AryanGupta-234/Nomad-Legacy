@@ -3163,6 +3163,35 @@
     .cmd-palette-box{ width:92vw; }
     .ai-chat-log{ max-height:44vh; }
   }
+
+  /* NOMAD Lyrics v3 — immersive full-screen reading surface. Existing markup and behavior are intentionally preserved. */
+  .lyrics-panel.fullscreen{
+    background:radial-gradient(circle at 22% 12%, rgba(var(--accent-rgb),.10), transparent 34%), linear-gradient(180deg, rgba(5,7,11,.82), rgba(5,7,11,.96));
+  }
+  .lyrics-panel.fullscreen .lyrics-panel-body-row{align-items:stretch;}
+  .lyrics-panel.fullscreen .lyrics-panel-inner{width:min(1080px, calc(100vw - 520px));max-width:1080px;padding:48px clamp(28px,5vw,72px) 210px;margin:0;scroll-padding-top:170px;}
+  .lyrics-panel.fullscreen .lyrics-pinned-top{margin:0 calc(clamp(28px,5vw,72px) * -1);padding:16px clamp(28px,5vw,72px) 14px;background:linear-gradient(180deg, rgba(6,8,12,.94), rgba(6,8,12,.68));border-bottom:1px solid rgba(255,255,255,.07);backdrop-filter:blur(22px) saturate(150%);}
+  .lyrics-panel.fullscreen .lyrics-artist-rail{max-width:760px;margin:0 auto 18px;padding:11px 13px;border-radius:14px;background:rgba(255,255,255,.045);border-color:rgba(255,255,255,.08);}
+  .lyrics-panel.fullscreen .lyrics-tabs{max-width:760px;margin:0 auto 22px;padding:5px;border-radius:14px;background:rgba(255,255,255,.035);border-color:rgba(255,255,255,.07);overflow-x:auto;flex-wrap:nowrap;}
+  .lyrics-panel.fullscreen .lyrics-tab{padding:8px 14px;}
+  .lyrics-panel.fullscreen .lyrics-search-row{max-width:760px;margin:0 auto 18px;}
+  .lyrics-panel.fullscreen .lyrics-line{max-width:860px;margin:0 auto;padding:12px 0;font-size:28px;line-height:1.55;letter-spacing:-.018em;font-weight:650;color:rgba(255,255,255,.24);opacity:.62;transform-origin:center left;}
+  .lyrics-panel.fullscreen .lyrics-line.active{font-size:48px;line-height:1.22;letter-spacing:-.032em;font-weight:800;color:#fff;opacity:1;transform:translateX(10px) scale(1.015);text-shadow:0 14px 50px rgba(var(--accent-rgb),.28);}
+  .lyrics-panel.fullscreen .lyrics-line.active::before{width:5px;height:1.05em;margin-right:16px;vertical-align:-.08em;box-shadow:0 0 20px rgba(var(--accent-rgb),.5);}
+  .lyrics-panel.fullscreen .lyrics-line.unsynced{color:rgba(255,255,255,.58);}
+  .lyrics-panel.fullscreen .lyrics-plain{max-width:760px;margin:0 auto;font-size:18px;line-height:1.9;}
+  .lyrics-panel.fullscreen .lyrics-empty,.lyrics-panel.fullscreen .lyrics-sync-notice,.lyrics-panel.fullscreen .lyrics-fix-row{max-width:760px;margin-left:auto;margin-right:auto;}
+  .lyrics-panel.fullscreen .lyrics-fs-sidebar{width:min(360px, 30vw);padding:34px 26px 170px;background:linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.008));border-left-color:rgba(255,255,255,.08);}
+  .lyrics-panel.fullscreen .lyrics-fs-sidebar .sidebar-artist-panel{border-radius:18px;background:rgba(255,255,255,.04);}
+  .lyrics-panel.fullscreen .lyrics-fs-sidebar .sap-cover{border-radius:16px;box-shadow:0 28px 70px -30px rgba(0,0,0,.95),0 0 0 1px rgba(255,255,255,.07);}
+  .lyrics-panel.fullscreen.compact .lyrics-panel-inner{width:100%;max-width:900px;padding:34px 32px 190px;margin:0 auto;}
+  .lyrics-panel.fullscreen.compact .lyrics-pinned-top{margin-left:-32px;margin-right:-32px;padding-left:32px;padding-right:32px;}
+  .lyrics-panel.fullscreen.compact .lyrics-line{font-size:25px;}
+  .lyrics-panel.fullscreen.compact .lyrics-line.active{font-size:40px;}
+  @media (max-width:1100px){.lyrics-panel.fullscreen .lyrics-panel-inner{width:calc(100vw - 360px);}.lyrics-panel.fullscreen .lyrics-fs-sidebar{width:300px;padding-left:20px;padding-right:20px;}}
+  @media (max-width:900px){.lyrics-panel.fullscreen .lyrics-panel-inner{width:100%;max-width:860px;padding:28px 30px 185px;margin:0 auto;}.lyrics-panel.fullscreen .lyrics-pinned-top{margin-left:-30px;margin-right:-30px;padding-left:30px;padding-right:30px;}.lyrics-panel.fullscreen .lyrics-fs-sidebar{display:none;}.lyrics-panel.fullscreen .lyrics-line{font-size:24px;line-height:1.58;}.lyrics-panel.fullscreen .lyrics-line.active{font-size:39px;line-height:1.27;}}
+  @media (max-width:640px){.lyrics-panel.fullscreen .lyrics-panel-header{padding:13px 14px 10px;}.lyrics-panel.fullscreen .lyrics-panel-inner{padding:20px 18px 165px;}.lyrics-panel.fullscreen .lyrics-pinned-top{margin-left:-18px;margin-right:-18px;padding-left:18px;padding-right:18px;}.lyrics-panel.fullscreen .lyrics-artist-rail{margin-bottom:14px;}.lyrics-panel.fullscreen .lyrics-tabs{margin-bottom:16px;}.lyrics-panel.fullscreen .lyrics-line{font-size:20px;line-height:1.55;padding:8px 0;}.lyrics-panel.fullscreen .lyrics-line.active{font-size:31px;line-height:1.3;transform:translateX(5px);}.lyrics-panel.fullscreen .lyrics-line.active::before{width:4px;margin-right:10px;}.lyrics-panel.fullscreen .lyrics-plain{font-size:15px;line-height:1.8;}}
+  @media (prefers-reduced-motion:reduce){.lyrics-panel.fullscreen .lyrics-line{transition:none;}}
 </style>
 </head>
 <body>
