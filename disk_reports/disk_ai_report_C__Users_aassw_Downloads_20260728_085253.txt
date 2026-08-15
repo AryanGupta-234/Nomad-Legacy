@@ -1,0 +1,317 @@
+Disk AI Analyzer v4.1 Report
+Generated: 2026-07-28 08:52:53
+Root: C:\Users\aassw\Downloads
+Admin: yes
+
+════════════════════════════════════════════════════════════════════════════════
+SUMMARY
+════════════════════════════════════════════════════════════════════════════════
+  Files:           555
+  Total size:      4.2 GB
+  Duplicates:      51 groups  (32.2 MB waste)
+  AI candidates:   62
+  Denied/skipped:  0 / 0
+
+AI BRAIN
+────────────────────────────────────────────────────────────────────────────────
+  Priority: ✓ Moderate cleanup candidates  [MEDIUM]
+  AI learned from 6 scans  |  Avg dup ratio: 1.9%
+  Adaptive large:  high ≥ 500.0 MB  |  extreme ≥ 1000.0 MB
+  Adaptive old:    old ≥ 365d  |  very old ≥ 730d
+  Extreme files: 0  |  Very old: 0  |  AI candidates: 62
+  Top type:   Installers → 1.6 GB in 21 files
+  Top folder: C:\Users\aassw\Downloads → 2.6 GB
+  Duplicate waste: 32.2 MB (0.8% of total)
+
+AI LEARNING MODEL
+────────────────────────────────────────────────────────────────────────────────
+  Scans processed: 6   Feedback events: 0
+  Avg duplicate waste ratio: 1.9%
+  Safe extensions: none yet
+  Risky extensions: none yet
+  Learned large baseline: 62.1 MB
+
+AUTONOMOUS CLEANUP PLAN  (verify before deleting)
+────────────────────────────────────────────────────────────────────────────────
+   REVIEW   62%    148.6 MB  C:\Users\aassw\Downloads\Unconfirmed 681793.crdownload
+           temp/waste ext (.crdownload)
+   REVIEW   90%     11.6 MB  C:\Users\aassw\Downloads\ASUS_X1605ZA_316_BIOS_Update_1.exe
+           identical SHA-256 — older duplicate
+   REVIEW   90%      8.3 MB  C:\Users\aassw\Downloads\Intel-Driver-and-Support-Assistant-Installer.exe
+           identical SHA-256 — older duplicate
+   REVIEW   90%      7.7 MB  C:\Users\aassw\Downloads\io\BarkhaBh\1783859430421.mp4
+           identical SHA-256 — older duplicate
+   REVIEW   62%    650.3 KB  C:\Users\aassw\Downloads\prixon_v1.3\prixon_v3\logs\p1_watchdog.log
+           temp/waste ext (.log)
+   REVIEW   62%    520.2 KB  C:\Users\aassw\Downloads\prixon_v1.3\prixon_v3\logs\p1_error.log
+           temp/waste ext (.log)
+   REVIEW   90%    250.1 KB  C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (24).jpg
+           identical SHA-256 — older duplicate
+   REVIEW   90%    183.9 KB  C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (187).jpg
+           identical SHA-256 — older duplicate
+   REVIEW   90%    182.1 KB  C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (40).jpg
+           identical SHA-256 — older duplicate
+   REVIEW   90%    180.9 KB  C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (215).jpg
+           identical SHA-256 — older duplicate
+   REVIEW   90%    173.4 KB  C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (164).jpg
+           identical SHA-256 — older duplicate
+   REVIEW   90%    154.2 KB  C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (237).jpg
+           identical SHA-256 — older duplicate
+   REVIEW   90%    150.9 KB  C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (117).jpg
+           identical SHA-256 — older duplicate
+   REVIEW   90%    142.1 KB  C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (36).jpg
+           identical SHA-256 — older duplicate
+   REVIEW   90%    142.1 KB  C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (137).jpg
+           identical SHA-256 — older duplicate
+   REVIEW   90%    136.8 KB  C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (163).jpg
+           identical SHA-256 — older duplicate
+   REVIEW   90%    134.5 KB  C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG11104.jpg
+           identical SHA-256 — older duplicate
+   REVIEW   90%    131.2 KB  C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (238).jpg
+           identical SHA-256 — older duplicate
+   REVIEW   90%    131.2 KB  C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (167).jpg
+           identical SHA-256 — older duplicate
+   REVIEW   90%    131.2 KB  C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (116).jpg
+           identical SHA-256 — older duplicate
+   REVIEW   90%    127.5 KB  C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (194).jpg
+           identical SHA-256 — older duplicate
+   REVIEW   90%    121.2 KB  C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (235).jpg
+           identical SHA-256 — older duplicate
+   REVIEW   90%    121.2 KB  C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (10).jpg
+           identical SHA-256 — older duplicate
+   REVIEW   90%    118.3 KB  C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (143).jpg
+           identical SHA-256 — older duplicate
+   REVIEW   90%    118.3 KB  C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (118).jpg
+           identical SHA-256 — older duplicate
+   REVIEW   90%    116.9 KB  C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (186).jpg
+           identical SHA-256 — older duplicate
+   REVIEW   90%    112.7 KB  C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (15).jpg
+           identical SHA-256 — older duplicate
+   REVIEW   90%    112.4 KB  C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (62).jpg
+           identical SHA-256 — older duplicate
+   REVIEW   90%    111.5 KB  C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (11).jpg
+           identical SHA-256 — older duplicate
+   REVIEW   90%    107.4 KB  C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (38).jpg
+           identical SHA-256 — older duplicate
+   REVIEW   90%    107.2 KB  C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (141).jpg
+           identical SHA-256 — older duplicate
+   REVIEW   90%    107.2 KB  C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (112).jpg
+           identical SHA-256 — older duplicate
+   REVIEW   90%    102.7 KB  C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (23).jpg
+           identical SHA-256 — older duplicate
+   REVIEW   90%     96.1 KB  C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (67).jpg
+           identical SHA-256 — older duplicate
+   REVIEW   90%     95.2 KB  C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (133).jpg
+           identical SHA-256 — older duplicate
+   REVIEW   90%     85.6 KB  C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (192).jpg
+           identical SHA-256 — older duplicate
+   REVIEW   90%     78.7 KB  C:\Users\aassw\Downloads\disk_ai_analyzer (1).py
+           identical SHA-256 — older duplicate
+   REVIEW   90%     78.7 KB  C:\Users\aassw\Downloads\disk_ai_analyzer.py
+           identical SHA-256 — older duplicate
+   REVIEW   90%     59.6 KB  C:\Users\aassw\Downloads\nomad_ecosystem (4).py
+           identical SHA-256 — older duplicate
+   REVIEW   90%     59.6 KB  C:\Users\aassw\Downloads\nomad_ecosystem (3).py
+           identical SHA-256 — older duplicate
+   REVIEW   90%     53.4 KB  C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (226).jpg
+           identical SHA-256 — older duplicate
+   REVIEW   90%     40.0 KB  C:\Users\aassw\Downloads\files (1)\nomad_web.py
+           identical SHA-256 — older duplicate
+   REVIEW   90%     38.5 KB  C:\Users\aassw\Downloads\prixon_v1.3\prixon_v3\backups\v1.1.0_20260419_015602\pipeline\classifier_free.py
+           identical SHA-256 — older duplicate
+   REVIEW   90%     31.9 KB  C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (188).jpg
+           identical SHA-256 — older duplicate
+   REVIEW   90%     29.3 KB  C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (76).jpg
+           identical SHA-256 — older duplicate
+   REVIEW   90%     23.4 KB  C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (196).jpg
+           identical SHA-256 — older duplicate
+   REVIEW   90%     20.9 KB  C:\Users\aassw\Downloads\prixon_v1.3\prixon_v3\backups\v1.1.0_20260419_015602\pipeline\classifier.py
+           identical SHA-256 — older duplicate
+   REVIEW   90%     18.0 KB  C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (109).jpg
+           identical SHA-256 — older duplicate
+   REVIEW   90%     17.5 KB  C:\Users\aassw\Downloads\prixon_v1.3\prixon_v3\backups\v1.1.0_20260419_015602\p1_watchdog\watchdog.py
+           identical SHA-256 — older duplicate
+   REVIEW   90%     15.5 KB  C:\Users\aassw\Downloads\prixon_v1.3\prixon_v3\backups\v1.1.0_20260419_015602\p1_watchdog\collectors\browser_collector.py
+           identical SHA-256 — older duplicate
+   REVIEW   90%     14.2 KB  C:\Users\aassw\Downloads\prixon_v1.3\prixon_v3\backups\v1.1.0_20260419_015602\p1_watchdog\collectors\youtube_collector.py
+           identical SHA-256 — older duplicate
+   REVIEW   90%     13.6 KB  C:\Users\aassw\Downloads\prixon_v1.3\prixon_v3\backups\v1.1.0_20260419_015602\p1_watchdog\collectors\profiler.py
+           identical SHA-256 — older duplicate
+   REVIEW   90%     12.4 KB  C:\Users\aassw\Downloads\prixon_v1.3\prixon_v3\backups\v1.1.0_20260419_015602\p1_watchdog\collectors\update_collector.py
+           identical SHA-256 — older duplicate
+   REVIEW   90%     11.2 KB  C:\Users\aassw\Downloads\prixon_v1.3\prixon_v3\backups\v1.1.0_20260419_015602\p1_watchdog\collectors\media_collector.py
+           identical SHA-256 — older duplicate
+   REVIEW   90%     10.6 KB  C:\Users\aassw\Downloads\prixon_v1.3\prixon_v3\backups\v1.1.0_20260419_015602\p1_watchdog\collectors\network_collector.py
+           identical SHA-256 — older duplicate
+   REVIEW   90%     10.6 KB  C:\Users\aassw\Downloads\prixon_v1.3\prixon_v3\backups\v1.1.0_20260419_015602\p1_watchdog\collectors\ps1_collector.py
+           identical SHA-256 — older duplicate
+   REVIEW   90%      7.7 KB  C:\Users\aassw\Downloads\prixon_v1.3\prixon_v3\backups\v1.1.0_20260419_015602\p1_watchdog\paths.py
+           identical SHA-256 — older duplicate
+   REVIEW   90%      4.2 KB  C:\Users\aassw\Downloads\prixon_v1.3\prixon_v3\backups\v1.1.0_20260419_015602\p1_watchdog\collectors\rhythm_collector.py
+           identical SHA-256 — older duplicate
+   REVIEW   90%      3.6 KB  C:\Users\aassw\Downloads\prixon_v1.3\prixon_v3\backups\v1.1.0_20260419_015602\p1_watchdog\collectors\screen_collector.py
+           identical SHA-256 — older duplicate
+   REVIEW   90%      3.0 KB  C:\Users\aassw\Downloads\prixon_v1.3\prixon_v3\backups\v1.1.0_20260419_015602\p1_watchdog\collectors\kernel_collector.py
+           identical SHA-256 — older duplicate
+
+FILE TYPE STORAGE
+────────────────────────────────────────────────────────────────────────────────
+  Installers           21 files      1.6 GB
+  Video                52 files      1.5 GB
+  Archives             12 files    826.4 MB
+  Logs/Temp             5 files    149.8 MB
+  Images              337 files     50.1 MB
+  Other                20 files     21.0 MB
+  Code                100 files      2.3 MB
+  Documents             7 files      4.6 KB
+  No Ext                1 files        63 B
+
+TOP LARGE FILES
+────────────────────────────────────────────────────────────────────────────────
+    921.3 MB  2026-06-22 19:59  C:\Users\aassw\Downloads\io\BarkhaBh\983222.mp4
+    826.9 MB  2026-05-09 11:51  C:\Users\aassw\Downloads\gfx_win_101.8724.exe
+
+DUPLICATE GROUPS
+────────────────────────────────────────────────────────────────────────────────
+  SHA256:8a5c8094b5c57c26d718…  2 copies  each 11.6 MB
+    C:\Users\aassw\Downloads\ASUS_X1605ZA_316_BIOS_Update_1 (1).exe  mod:2026-07-10 13:59
+    C:\Users\aassw\Downloads\ASUS_X1605ZA_316_BIOS_Update_1.exe  mod:2026-06-14 15:10
+  SHA256:d6edb02027c4800f247b…  2 copies  each 8.3 MB
+    C:\Users\aassw\Downloads\Intel-Driver-and-Support-Assistant-Installer (1).exe  mod:2026-07-10 12:21
+    C:\Users\aassw\Downloads\Intel-Driver-and-Support-Assistant-Installer.exe  mod:2026-05-09 11:54
+  SHA256:86368579518a11134138…  2 copies  each 7.7 MB
+    C:\Users\aassw\Downloads\io\BarkhaBh\1784009122212.mp4  mod:2026-07-18 09:18
+    C:\Users\aassw\Downloads\io\BarkhaBh\1783859430421.mp4  mod:2026-07-14 09:48
+  SHA256:e59f5f85727930fbd49c…  4 copies  each 131.2 KB
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (90).jpg  mod:2026-07-10 09:00
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (238).jpg  mod:2026-07-10 09:00
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (167).jpg  mod:2026-07-10 09:00
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (116).jpg  mod:2026-07-10 09:00
+  SHA256:f85f98b1d4a22f74fe0b…  2 copies  each 250.1 KB
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (253).jpg  mod:2026-07-10 09:00
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (24).jpg  mod:2026-07-10 09:00
+  SHA256:3d1516a8a67403c76c54…  3 copies  each 142.1 KB
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (57).jpg  mod:2026-07-10 09:00
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (36).jpg  mod:2026-07-10 09:00
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (137).jpg  mod:2026-07-10 09:00
+  SHA256:bf4fc2f5b8b9ce58271e…  2 copies  each 183.9 KB
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (43).jpg  mod:2026-07-10 09:00
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (187).jpg  mod:2026-07-10 09:00
+  SHA256:3f681a3511e25facbda9…  2 copies  each 182.1 KB
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (6).jpg  mod:2026-07-10 09:00
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (40).jpg  mod:2026-07-10 09:00
+  SHA256:8b2de2a5251b92258edf…  3 copies  each 121.2 KB
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (89).jpg  mod:2026-07-10 09:00
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (235).jpg  mod:2026-07-10 09:00
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (10).jpg  mod:2026-07-10 09:00
+  SHA256:51777b189e0813682fd6…  2 copies  each 180.9 KB
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (4).jpg  mod:2026-07-10 09:00
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (215).jpg  mod:2026-07-10 09:00
+  SHA256:46c094a1ad90f56bd93e…  3 copies  each 118.3 KB
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (84).jpg  mod:2026-07-10 09:00
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (143).jpg  mod:2026-07-10 09:00
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (118).jpg  mod:2026-07-10 09:00
+  SHA256:2b3b2ee3bd99ba943980…  2 copies  each 173.4 KB
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (182).jpg  mod:2026-07-10 09:00
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (164).jpg  mod:2026-07-10 09:00
+  SHA256:cac85b37efd84f13322e…  3 copies  each 107.2 KB
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (63).jpg  mod:2026-07-10 09:00
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (141).jpg  mod:2026-07-10 09:00
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (112).jpg  mod:2026-07-10 09:00
+  SHA256:b3b3afda5197772f4915…  2 copies  each 154.2 KB
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (44).jpg  mod:2026-07-10 09:00
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (237).jpg  mod:2026-07-10 09:00
+  SHA256:34ee670a094722b522ce…  2 copies  each 150.9 KB
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (91).jpg  mod:2026-07-10 09:00
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (117).jpg  mod:2026-07-10 09:00
+  SHA256:7961b43f61367f80b1f5…  2 copies  each 136.8 KB
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (205).jpg  mod:2026-07-10 09:00
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (163).jpg  mod:2026-07-10 09:00
+  SHA256:453ce829d65ffa3c3b64…  2 copies  each 134.5 KB
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG11103.jpg  mod:2026-07-10 09:00
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG11104.jpg  mod:2026-07-10 09:00
+  SHA256:dae6b386bdbbe02f8830…  2 copies  each 127.5 KB
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (87).jpg  mod:2026-07-10 09:00
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (194).jpg  mod:2026-07-10 09:00
+  SHA256:4e248ffef5b924bd3691…  3 copies  each 78.7 KB
+    C:\Users\aassw\Downloads\files (1)\disk_ai_analyzer.py  mod:2026-07-18 08:01
+    C:\Users\aassw\Downloads\disk_ai_analyzer (1).py  mod:2026-07-16 09:50
+    C:\Users\aassw\Downloads\disk_ai_analyzer.py  mod:2026-05-09 15:55
+  SHA256:ad15083b778d5bf7f27c…  2 copies  each 116.9 KB
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (94).jpg  mod:2026-07-10 09:00
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (186).jpg  mod:2026-07-10 09:00
+  SHA256:eada92d9f4d1630ef1d7…  2 copies  each 112.7 KB
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (189).jpg  mod:2026-07-10 09:00
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (15).jpg  mod:2026-07-10 09:00
+  SHA256:715a84d7170c08fd4a8e…  2 copies  each 112.4 KB
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (97).jpg  mod:2026-07-10 09:00
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (62).jpg  mod:2026-07-10 09:00
+  SHA256:3f71b42f073b1068f8eb…  2 copies  each 111.5 KB
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (51).jpg  mod:2026-07-10 09:00
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (11).jpg  mod:2026-07-10 09:00
+  SHA256:6c5177fc817a41b833f2…  2 copies  each 107.4 KB
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (82).jpg  mod:2026-07-10 09:00
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (38).jpg  mod:2026-07-10 09:00
+  SHA256:0c83d1e908928dcd4268…  2 copies  each 102.7 KB
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (49).jpg  mod:2026-07-10 09:00
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (23).jpg  mod:2026-07-10 09:00
+  SHA256:3c23e4ed508af4d9d5c0…  2 copies  each 96.1 KB
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (8).jpg  mod:2026-07-10 09:00
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (67).jpg  mod:2026-07-10 09:00
+  SHA256:a6256715458eac5c034b…  2 copies  each 95.2 KB
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (183).jpg  mod:2026-07-10 09:00
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (133).jpg  mod:2026-07-10 09:00
+  SHA256:6afa149e15e8d2c7a1c8…  3 copies  each 59.6 KB
+    C:\Users\aassw\Downloads\nomad_ecosystem (5).py  mod:2026-07-16 15:09
+    C:\Users\aassw\Downloads\nomad_ecosystem (4).py  mod:2026-07-16 15:07
+    C:\Users\aassw\Downloads\nomad_ecosystem (3).py  mod:2026-07-16 15:06
+  SHA256:494a3c78abf35493b30d…  2 copies  each 85.6 KB
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (198).jpg  mod:2026-07-10 09:00
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (192).jpg  mod:2026-07-10 09:00
+  SHA256:2009dd5404bfbbaac52b…  2 copies  each 53.4 KB
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (251).jpg  mod:2026-07-10 09:00
+    C:\Users\aassw\Downloads\MalluWw\MalluWw\File1\IMG (226).jpg  mod:2026-07-10 09:00
+
+EXTENSION BREAKDOWN
+────────────────────────────────────────────────────────────────────────────────
+              .exe        20 files      1.6 GB
+              .mp4        52 files      1.5 GB
+              .zip        12 files    826.4 MB
+       .crdownload         1 files    148.6 MB
+              .jpg       332 files     47.0 MB
+              .316         1 files     19.1 MB
+              .msi         1 files     11.4 MB
+             .jpeg         4 files      2.1 MB
+               .py        79 files      1.6 MB
+              .log         4 files      1.2 MB
+              .png         1 files      1.0 MB
+             .html         9 files    621.9 KB
+              .htm         3 files    617.8 KB
+              .pyc         6 files    420.0 KB
+          .torrent         1 files    344.9 KB
+            .jsonl         3 files    341.7 KB
+             .json        11 files    130.9 KB
+         .devtools         1 files    130.2 KB
+              .ps1         2 files     14.2 KB
+               .md         2 files      3.6 KB
+              .bat         1 files      2.6 KB
+              .txt         5 files      1.1 KB
+              .ini         1 files       282 B
+               .hb         2 files       260 B
+            [none]         1 files        63 B
+
+TOP FOLDERS
+────────────────────────────────────────────────────────────────────────────────
+      2.6 GB       63 files  C:\Users\aassw\Downloads
+      1.5 GB       55 files  C:\Users\aassw\Downloads\io
+     68.1 MB      309 files  C:\Users\aassw\Downloads\MalluWw
+     44.3 MB       23 files  C:\Users\aassw\Downloads\Directx
+     19.1 MB        1 files  C:\Users\aassw\Downloads\X1605ZAAS316
+      2.4 MB       77 files  C:\Users\aassw\Downloads\prixon_v1.3
+    382.4 KB        5 files  C:\Users\aassw\Downloads\files (1)
+    159.8 KB        1 files  C:\Users\aassw\Downloads\__pycache__
+    145.2 KB       10 files  C:\Users\aassw\Downloads\files
+    112.7 KB        2 files  C:\Users\aassw\Downloads\files (2)
+     99.8 KB        2 files  C:\Users\aassw\Downloads\files (4)
+     89.5 KB        2 files  C:\Users\aassw\Downloads\files (3)
+     64.4 KB        5 files  C:\Users\aassw\Downloads\pytihon
