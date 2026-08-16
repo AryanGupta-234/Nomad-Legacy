@@ -1,14 +1,14 @@
 import './styles/foundation.css';
 import './styles/production.css';
 import './styles/lyrics-discover-overhaul.css';
+import './lyrics-layout-runtime';
 
 /**
  * NOMAD frontend foundation.
  *
- * This module deliberately does not rebuild the legacy DOM. It establishes
- * stable layout primitives that the existing UI can adopt incrementally.
- * Runtime measurements are published as CSS variables so fixed/sticky chrome
- * can coexist with responsive content without hard-coded viewport guesses.
+ * The legacy DOM remains the visual source of truth. Runtime measurements are
+ * published as CSS variables so fixed/sticky chrome can coexist with
+ * responsive content without hard-coded viewport guesses.
  */
 const root = document.documentElement;
 root.classList.add('nomad-modern-runtime');
@@ -33,13 +33,8 @@ const measureChrome = (): void => {
   }
 
   const playerCandidates = [
-    '[data-player]',
-    '#player',
-    '#music-player',
-    '.music-player',
-    '.bottom-player',
-    '.player-bar',
-    '.now-playing-bar',
+    '[data-player]', '#player', '#music-player', '.music-player',
+    '.bottom-player', '.player-bar', '.now-playing-bar',
   ];
 
   let playerHeight = 0;
@@ -48,8 +43,7 @@ const measureChrome = (): void => {
     if (!element) continue;
     const rect = element.getBoundingClientRect();
     const style = window.getComputedStyle(element);
-    const isVisible = style.display !== 'none' && style.visibility !== 'hidden' && rect.height > 0;
-    if (isVisible) {
+    if (style.display !== 'none' && style.visibility !== 'hidden' && rect.height > 0) {
       playerHeight = Math.max(playerHeight, rect.height);
     }
   }
@@ -68,7 +62,6 @@ const updateLayout = (): void => {
 };
 
 updateLayout();
-
 window.addEventListener('resize', updateLayout, { passive: true });
 window.addEventListener('orientationchange', updateLayout, { passive: true });
 window.visualViewport?.addEventListener('resize', updateLayout, { passive: true });
@@ -79,18 +72,13 @@ if ('ResizeObserver' in window) {
   const observe = (): void => {
     const titlebar = document.querySelector<HTMLElement>('.app-titlebar');
     if (titlebar) observer.observe(titlebar);
-
     for (const selector of ['[data-player]', '#player', '#music-player', '.music-player', '.bottom-player', '.player-bar', '.now-playing-bar']) {
       const element = document.querySelector<HTMLElement>(selector);
       if (element) observer.observe(element);
     }
   };
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', observe, { once: true });
-  } else {
-    observe();
-  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', observe, { once: true });
+  else observe();
 }
 
 export {};
