@@ -3612,6 +3612,224 @@ body:has(.lyrics-panel.fullscreen) .bottom-player{z-index:1200;}
   .lyrics-panel.fullscreen .lyrics-tab-body{scroll-behavior:auto;}
 }
     
+
+
+/* NOMAD Lyrics v7 — full-screen chrome and artist rail rework. */
+.lyrics-panel.fullscreen{
+  --lyrics-v7-top:118px;
+  --lyrics-v7-gap:18px;
+  position:fixed !important;
+  inset:0 !important;
+  width:100vw !important;
+  height:100dvh !important;
+  max-width:none !important;
+  max-height:none !important;
+  margin:0 !important;
+  border-radius:0 !important;
+  display:flex !important;
+  flex-direction:column !important;
+  overflow:hidden !important;
+  z-index:1100 !important;
+  background:linear-gradient(180deg,rgba(7,9,13,.985),rgba(5,6,9,.99)) !important;
+}
+.lyrics-panel.fullscreen .lyrics-panel-header{
+  flex:0 0 58px !important;
+  min-height:58px !important;
+  height:58px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  gap:16px !important;
+  padding:0 24px !important;
+  border-bottom:1px solid rgba(255,255,255,.075) !important;
+  background:rgba(8,10,14,.92) !important;
+  backdrop-filter:blur(24px) saturate(150%) !important;
+  -webkit-backdrop-filter:blur(24px) saturate(150%) !important;
+  z-index:100 !important;
+}
+.lyrics-panel.fullscreen .lyrics-panel-body-row{
+  flex:1 1 auto !important;
+  min-height:0 !important;
+  height:auto !important;
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) minmax(330px,400px) !important;
+  gap:0 !important;
+  overflow:hidden !important;
+}
+.lyrics-panel.fullscreen .lyrics-panel-inner{
+  min-width:0 !important;
+  min-height:0 !important;
+  height:auto !important;
+  display:grid !important;
+  grid-template-rows:auto minmax(0,1fr) !important;
+  overflow:hidden !important;
+  padding:0 !important;
+}
+/* Reworked top artist/details bar: one coherent horizontal chrome row. */
+.lyrics-panel.fullscreen .lyrics-pinned-top{
+  position:relative !important;
+  inset:auto !important;
+  z-index:90 !important;
+  display:grid !important;
+  grid-template-columns:minmax(220px,280px) minmax(280px,1fr) auto !important;
+  grid-template-areas:"artist search actions" "artist tabs actions" !important;
+  align-items:center !important;
+  column-gap:18px !important;
+  row-gap:10px !important;
+  width:100% !important;
+  max-width:none !important;
+  min-height:132px !important;
+  padding:18px 28px 16px !important;
+  margin:0 !important;
+  border:0 !important;
+  border-bottom:1px solid rgba(255,255,255,.08) !important;
+  border-radius:0 !important;
+  background:linear-gradient(180deg,rgba(10,12,17,.98),rgba(9,11,15,.94)) !important;
+  box-shadow:0 18px 42px -30px rgba(0,0,0,.95) !important;
+  backdrop-filter:blur(24px) saturate(155%) !important;
+  -webkit-backdrop-filter:blur(24px) saturate(155%) !important;
+}
+.lyrics-panel.fullscreen .lyrics-pinned-top > *{min-width:0;}
+.lyrics-panel.fullscreen .lyrics-artist-rail{
+  grid-area:artist !important;
+  max-width:none !important;
+  width:100% !important;
+  min-width:0 !important;
+}
+.lyrics-panel.fullscreen .lyrics-search-row{
+  grid-area:search !important;
+  max-width:none !important;
+  width:100% !important;
+  margin:0 !important;
+}
+.lyrics-panel.fullscreen .lyrics-tabs{
+  grid-area:tabs !important;
+  max-width:none !important;
+  width:100% !important;
+  margin:0 !important;
+  min-width:0 !important;
+  overflow-x:auto !important;
+  scrollbar-width:none !important;
+}
+.lyrics-panel.fullscreen .lyrics-tabs::-webkit-scrollbar{display:none;}
+.lyrics-panel.fullscreen .lyrics-tabs > *{white-space:nowrap;}
+.lyrics-panel.fullscreen .lyrics-pinned-top .lyrics-actions,
+.lyrics-panel.fullscreen .lyrics-pinned-top .lyrics-header-actions,
+.lyrics-panel.fullscreen .lyrics-pinned-top .lyrics-controls{
+  grid-area:actions !important;
+  align-self:center !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:flex-end !important;
+  gap:8px !important;
+}
+/* If the existing top row does not have a dedicated actions wrapper,
+   keep its controls aligned rather than allowing them to overlay. */
+.lyrics-panel.fullscreen .lyrics-pinned-top button{position:relative;z-index:2;}
+/* Main lyric stage: this is the only scrolling surface on the left. */
+.lyrics-panel.fullscreen .lyrics-tab-body{
+  min-height:0 !important;
+  height:auto !important;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+  padding:36px clamp(28px,7vw,110px) calc(130px + env(safe-area-inset-bottom,0px)) !important;
+  scroll-padding-top:28px !important;
+  scroll-padding-bottom:140px !important;
+  overscroll-behavior:contain !important;
+  scrollbar-gutter:stable !important;
+}
+.lyrics-panel.fullscreen .lyrics-line{
+  scroll-margin-top:32px !important;
+  scroll-margin-bottom:140px !important;
+}
+/* Right artist rail: full-height independent column; never clip the songs list. */
+.lyrics-panel.fullscreen .lyrics-fs-sidebar{
+  min-width:0 !important;
+  min-height:0 !important;
+  height:100% !important;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+  padding:22px 22px 130px !important;
+  border-left:1px solid rgba(255,255,255,.075) !important;
+  background:linear-gradient(180deg,rgba(255,255,255,.025),rgba(255,255,255,.008)) !important;
+  scrollbar-gutter:stable !important;
+}
+.lyrics-panel.fullscreen .lyrics-fs-sidebar .sidebar-artist-panel{
+  position:static !important;
+  inset:auto !important;
+  top:auto !important;
+  bottom:auto !important;
+  width:100% !important;
+  max-width:none !important;
+  height:auto !important;
+  max-height:none !important;
+  min-height:0 !important;
+  margin:0 !important;
+  overflow:visible !important;
+}
+.lyrics-panel.fullscreen .lyrics-fs-sidebar .sidebar-artist-panel > *{
+  max-width:100%;
+}
+/* Let artwork remain large, but never consume the rail's entire height. */
+.lyrics-panel.fullscreen .lyrics-fs-sidebar img{
+  max-height:42vh;
+  object-fit:cover;
+}
+/* Song/popular sections below artist information must remain visible. */
+.lyrics-panel.fullscreen .lyrics-fs-sidebar .popular,
+.lyrics-panel.fullscreen .lyrics-fs-sidebar .artist-songs,
+.lyrics-panel.fullscreen .lyrics-fs-sidebar .sidebar-popular,
+.lyrics-panel.fullscreen .lyrics-fs-sidebar .artist-popular,
+.lyrics-panel.fullscreen .lyrics-fs-sidebar [class*="popular"],
+.lyrics-panel.fullscreen .lyrics-fs-sidebar [class*="songs"]{
+  position:relative !important;
+  height:auto !important;
+  max-height:none !important;
+  overflow:visible !important;
+  flex:none !important;
+}
+.lyrics-panel.fullscreen .lyrics-fs-sidebar [class*="popular"] > *,
+.lyrics-panel.fullscreen .lyrics-fs-sidebar [class*="songs"] > *{
+  min-width:0;
+}
+/* Keep the actual player above fullscreen chrome without covering readable content. */
+body:has(.lyrics-panel.fullscreen) .player-bar,
+body:has(.lyrics-panel.fullscreen) .player-container,
+body:has(.lyrics-panel.fullscreen) .bottom-player{
+  z-index:1250 !important;
+}
+@media (max-width:1000px){
+  .lyrics-panel.fullscreen .lyrics-pinned-top{
+    grid-template-columns:minmax(190px,240px) minmax(0,1fr) !important;
+    grid-template-areas:"artist search" "artist tabs" !important;
+    min-height:128px !important;
+  }
+  .lyrics-panel.fullscreen .lyrics-fs-sidebar{width:auto;}
+}
+@media (max-width:820px){
+  .lyrics-panel.fullscreen .lyrics-panel-body-row{grid-template-columns:minmax(0,1fr) !important;}
+  .lyrics-panel.fullscreen .lyrics-fs-sidebar{display:none !important;}
+  .lyrics-panel.fullscreen .lyrics-pinned-top{
+    grid-template-columns:minmax(0,1fr) auto !important;
+    grid-template-areas:"artist actions" "search search" "tabs tabs" !important;
+    min-height:164px !important;
+    padding:14px 20px !important;
+  }
+}
+@media (max-width:560px){
+  .lyrics-panel.fullscreen .lyrics-panel-header{padding:0 14px !important;}
+  .lyrics-panel.fullscreen .lyrics-pinned-top{
+    grid-template-columns:1fr !important;
+    grid-template-areas:"artist" "search" "tabs" !important;
+    min-height:188px !important;
+    padding:12px 14px !important;
+  }
+  .lyrics-panel.fullscreen .lyrics-tab-body{padding-left:18px !important;padding-right:18px !important;}
+}
+@media (prefers-reduced-motion:reduce){
+  .lyrics-panel.fullscreen .lyrics-tab-body{scroll-behavior:auto !important;}
+}
+    
 </style>
 </head>
 <body>
