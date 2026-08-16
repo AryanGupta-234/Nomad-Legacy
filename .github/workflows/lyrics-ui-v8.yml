@@ -1,0 +1,355 @@
+name: Lyrics v8 — full-width chrome and rail stacking fix
+
+on:
+  push:
+    branches: [agent/nomad-vnext-foundation]
+
+permissions:
+  contents: write
+
+jobs:
+  lyrics-ui-v8:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/nomad-vnext-foundation
+
+      - name: Apply Lyrics v8 layout correction
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('templates/index.html')
+          text = path.read_text(encoding='utf-8')
+          marker = '/* NOMAD Lyrics v8 — full-width chrome and rail stacking fix. */'
+          if marker in text:
+              print('Lyrics v8 already present')
+              raise SystemExit(0)
+
+          css = r'''
+          /* NOMAD Lyrics v8 — full-width chrome and rail stacking fix. */
+          /*
+             v8 fixes the actual composition seen in fullscreen: the artist/search/tabs
+             chrome spans the whole viewport, while the lyric stage and artist rail live
+             underneath it as two independent columns. The existing markup and JS remain
+             untouched.
+          */
+          .lyrics-panel.fullscreen{
+            --lyrics-v8-header:58px;
+            --lyrics-v8-chrome:136px;
+            --lyrics-v8-player:118px;
+            position:fixed !important;
+            inset:0 !important;
+            width:100vw !important;
+            height:100dvh !important;
+            max-width:none !important;
+            max-height:none !important;
+            margin:0 !important;
+            padding:0 !important;
+            display:flex !important;
+            flex-direction:column !important;
+            overflow:hidden !important;
+            z-index:1100 !important;
+            isolation:isolate !important;
+          }
+
+          .lyrics-panel.fullscreen .lyrics-panel-header{
+            flex:0 0 var(--lyrics-v8-header) !important;
+            height:var(--lyrics-v8-header) !important;
+            min-height:var(--lyrics-v8-header) !important;
+            position:relative !important;
+            z-index:300 !important;
+            padding:0 24px !important;
+            border-bottom:1px solid rgba(255,255,255,.08) !important;
+          }
+
+          /* Body is the real two-column stage. Reserve the top chrome instead of
+             allowing it to sit on top of the content. */
+          .lyrics-panel.fullscreen .lyrics-panel-body-row{
+            position:relative !important;
+            flex:1 1 auto !important;
+            min-height:0 !important;
+            height:auto !important;
+            display:grid !important;
+            grid-template-columns:minmax(0,1fr) minmax(340px,400px) !important;
+            grid-template-rows:minmax(0,1fr) !important;
+            overflow:hidden !important;
+            padding-top:var(--lyrics-v8-chrome) !important;
+          }
+
+          /* FULL-WIDTH TOP ARTIST BAR.
+             The original pinned block lives inside the left column. In fullscreen
+             we intentionally take it out of that column and pin it to the viewport
+             so it becomes one shared chrome row for the entire Lyrics experience. */
+          .lyrics-panel.fullscreen .lyrics-pinned-top{
+            position:absolute !important;
+            left:0 !important;
+            right:0 !important;
+            top:0 !important;
+            width:100% !important;
+            max-width:none !important;
+            height:var(--lyrics-v8-chrome) !important;
+            min-height:var(--lyrics-v8-chrome) !important;
+            margin:0 !important;
+            padding:14px 28px !important;
+            display:grid !important;
+            grid-template-columns:minmax(230px,300px) minmax(280px,1fr) minmax(0,1.25fr) !important;
+            grid-template-rows:50px 44px !important;
+            grid-template-areas:
+              "artist track search"
+              "artist tabs tabs" !important;
+            align-items:center !important;
+            column-gap:18px !important;
+            row-gap:8px !important;
+            background:
+              linear-gradient(180deg,rgba(10,12,17,.99),rgba(8,10,14,.975)) !important;
+            border:0 !important;
+            border-bottom:1px solid rgba(255,255,255,.09) !important;
+            border-radius:0 !important;
+            box-shadow:0 14px 36px -26px rgba(0,0,0,.95) !important;
+            backdrop-filter:blur(28px) saturate(160%) !important;
+            -webkit-backdrop-filter:blur(28px) saturate(160%) !important;
+            z-index:250 !important;
+            overflow:hidden !important;
+          }
+
+          .lyrics-panel.fullscreen .lyrics-pinned-top > *{
+            min-width:0 !important;
+            max-width:none !important;
+          }
+
+          /* Compact, full-height artist identity block. */
+          .lyrics-panel.fullscreen .lyrics-pinned-top .lyrics-artist-rail,
+          .lyrics-panel.fullscreen .lyrics-pinned-top .artist-rail,
+          .lyrics-panel.fullscreen .lyrics-pinned-top [class*="artist"]{
+            grid-area:artist !important;
+            width:100% !important;
+            min-width:0 !important;
+            max-width:300px !important;
+          }
+
+          .lyrics-panel.fullscreen .lyrics-pinned-top .lyrics-search-row,
+          .lyrics-panel.fullscreen .lyrics-pinned-top [class*="search-row"]{
+            grid-area:search !important;
+            width:100% !important;
+            min-width:0 !important;
+            max-width:none !important;
+            margin:0 !important;
+          }
+
+          .lyrics-panel.fullscreen .lyrics-pinned-top .lyrics-tabs,
+          .lyrics-panel.fullscreen .lyrics-pinned-top [class*="tabs"]{
+            grid-area:tabs !important;
+            width:100% !important;
+            min-width:0 !important;
+            max-width:none !important;
+            margin:0 !important;
+            overflow-x:auto !important;
+            overflow-y:hidden !important;
+            scrollbar-width:none !important;
+          }
+          .lyrics-panel.fullscreen .lyrics-pinned-top .lyrics-tabs::-webkit-scrollbar{display:none !important;}
+          .lyrics-panel.fullscreen .lyrics-pinned-top .lyrics-tabs > *{white-space:nowrap !important;}
+
+          /* If the current markup exposes a track/title block, use it as the middle
+             identity region. It never overlaps search/tabs because each row owns space. */
+          .lyrics-panel.fullscreen .lyrics-pinned-top .lyrics-track,
+          .lyrics-panel.fullscreen .lyrics-pinned-top .track-info,
+          .lyrics-panel.fullscreen .lyrics-pinned-top [class*="track-info"],
+          .lyrics-panel.fullscreen .lyrics-pinned-top [class*="song-info"]{
+            grid-area:track !important;
+            min-width:0 !important;
+            overflow:hidden !important;
+          }
+
+          /* The left lyric column begins BELOW the full-width chrome. */
+          .lyrics-panel.fullscreen .lyrics-panel-inner{
+            grid-column:1 !important;
+            grid-row:1 !important;
+            min-width:0 !important;
+            min-height:0 !important;
+            height:100% !important;
+            display:block !important;
+            overflow:hidden !important;
+            padding:0 !important;
+          }
+
+          .lyrics-panel.fullscreen .lyrics-tab-body{
+            width:100% !important;
+            height:100% !important;
+            min-height:0 !important;
+            max-height:none !important;
+            overflow-y:auto !important;
+            overflow-x:hidden !important;
+            padding:34px clamp(34px,7vw,118px) calc(var(--lyrics-v8-player) + 54px + env(safe-area-inset-bottom,0px)) !important;
+            scroll-padding-top:34px !important;
+            scroll-padding-bottom:calc(var(--lyrics-v8-player) + 70px) !important;
+            overscroll-behavior:contain !important;
+            scrollbar-gutter:stable !important;
+          }
+
+          .lyrics-panel.fullscreen .lyrics-line{
+            scroll-margin-top:42px !important;
+            scroll-margin-bottom:calc(var(--lyrics-v8-player) + 70px) !important;
+          }
+
+          /* RIGHT RAIL: a real column, never an absolutely positioned card.
+             Everything in it flows vertically, so artist information cannot cover
+             the songs/popular list below it. */
+          .lyrics-panel.fullscreen .lyrics-fs-sidebar{
+            grid-column:2 !important;
+            grid-row:1 !important;
+            min-width:0 !important;
+            min-height:0 !important;
+            height:100% !important;
+            max-height:none !important;
+            display:flex !important;
+            flex-direction:column !important;
+            align-items:stretch !important;
+            gap:16px !important;
+            overflow-y:auto !important;
+            overflow-x:hidden !important;
+            padding:22px 22px calc(var(--lyrics-v8-player) + 32px + env(safe-area-inset-bottom,0px)) !important;
+            border-left:1px solid rgba(255,255,255,.09) !important;
+            background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.008)) !important;
+            scrollbar-gutter:stable !important;
+            z-index:20 !important;
+          }
+
+          /* Undo common legacy positioning that causes the small artist pill/card
+             to sit on top of the popular songs. */
+          .lyrics-panel.fullscreen .lyrics-fs-sidebar .sidebar-artist-panel,
+          .lyrics-panel.fullscreen .lyrics-fs-sidebar .artist-panel,
+          .lyrics-panel.fullscreen .lyrics-fs-sidebar [class*="artist-panel"]{
+            position:relative !important;
+            inset:auto !important;
+            top:auto !important;
+            right:auto !important;
+            bottom:auto !important;
+            left:auto !important;
+            float:none !important;
+            width:100% !important;
+            max-width:none !important;
+            height:auto !important;
+            min-height:0 !important;
+            max-height:none !important;
+            margin:0 !important;
+            overflow:visible !important;
+            flex:0 0 auto !important;
+            transform:none !important;
+          }
+
+          .lyrics-panel.fullscreen .lyrics-fs-sidebar img{
+            max-width:100% !important;
+            max-height:40vh !important;
+            object-fit:cover !important;
+          }
+
+          /* Never let a nested panel establish a clipped scroll viewport. */
+          .lyrics-panel.fullscreen .lyrics-fs-sidebar .sidebar-artist-panel > div,
+          .lyrics-panel.fullscreen .lyrics-fs-sidebar .artist-panel > div{
+            max-height:none !important;
+          }
+
+          /* Popular/artist songs are normal flow sections. */
+          .lyrics-panel.fullscreen .lyrics-fs-sidebar .popular,
+          .lyrics-panel.fullscreen .lyrics-fs-sidebar .artist-songs,
+          .lyrics-panel.fullscreen .lyrics-fs-sidebar .sidebar-popular,
+          .lyrics-panel.fullscreen .lyrics-fs-sidebar .artist-popular,
+          .lyrics-panel.fullscreen .lyrics-fs-sidebar [class*="popular"],
+          .lyrics-panel.fullscreen .lyrics-fs-sidebar [class*="songs"]{
+            position:relative !important;
+            inset:auto !important;
+            width:100% !important;
+            height:auto !important;
+            min-height:0 !important;
+            max-height:none !important;
+            overflow:visible !important;
+            flex:0 0 auto !important;
+            margin:0 !important;
+          }
+
+          .lyrics-panel.fullscreen .lyrics-fs-sidebar .popular > *,
+          .lyrics-panel.fullscreen .lyrics-fs-sidebar .artist-songs > *,
+          .lyrics-panel.fullscreen .lyrics-fs-sidebar [class*="popular"] > *,
+          .lyrics-panel.fullscreen .lyrics-fs-sidebar [class*="songs"] > *{
+            min-width:0 !important;
+          }
+
+          /* Make the rail's own card surfaces visually subordinate to the page
+             chrome instead of creating another competing floating window. */
+          .lyrics-panel.fullscreen .lyrics-fs-sidebar .sidebar-artist-panel{
+            background:rgba(255,255,255,.035) !important;
+            border:1px solid rgba(255,255,255,.08) !important;
+            border-radius:22px !important;
+            padding:18px !important;
+            box-shadow:0 18px 48px -32px rgba(0,0,0,.9) !important;
+          }
+
+          /* Player clearance: content ends before the player, not underneath it. */
+          .lyrics-panel.fullscreen ~ .now-playing-bar,
+          .lyrics-panel.fullscreen ~ .player-bar,
+          .lyrics-panel.fullscreen ~ .bottom-player,
+          body.player-active .lyrics-panel.fullscreen{
+            --lyrics-player-clearance:var(--lyrics-v8-player);
+          }
+
+          @media (max-width:900px){
+            .lyrics-panel.fullscreen .lyrics-panel-body-row{
+              grid-template-columns:minmax(0,1fr) !important;
+            }
+            .lyrics-panel.fullscreen .lyrics-fs-sidebar{
+              display:none !important;
+            }
+            .lyrics-panel.fullscreen .lyrics-pinned-top{
+              grid-template-columns:minmax(170px,230px) minmax(0,1fr) !important;
+              grid-template-areas:"artist search" "artist tabs" !important;
+              column-gap:12px !important;
+              padding:12px 16px !important;
+            }
+            .lyrics-panel.fullscreen .lyrics-tab-body{
+              padding-left:24px !important;
+              padding-right:24px !important;
+            }
+          }
+
+          @media (max-width:600px){
+            .lyrics-panel.fullscreen{
+              --lyrics-v8-chrome:122px;
+            }
+            .lyrics-panel.fullscreen .lyrics-panel-header{
+              padding:0 14px !important;
+            }
+            .lyrics-panel.fullscreen .lyrics-pinned-top{
+              grid-template-columns:1fr !important;
+              grid-template-rows:auto auto auto !important;
+              grid-template-areas:"artist" "search" "tabs" !important;
+              height:var(--lyrics-v8-chrome) !important;
+              min-height:var(--lyrics-v8-chrome) !important;
+              padding:9px 12px !important;
+              row-gap:7px !important;
+            }
+            .lyrics-panel.fullscreen .lyrics-pinned-top .lyrics-artist-rail,
+            .lyrics-panel.fullscreen .lyrics-pinned-top .artist-rail,
+            .lyrics-panel.fullscreen .lyrics-pinned-top [class*="artist"]{
+              max-width:none !important;
+            }
+            .lyrics-panel.fullscreen .lyrics-tab-body{
+              padding:24px 18px calc(var(--lyrics-v8-player) + 42px) !important;
+            }
+          }
+          '''
+          text = text.replace('</style>', css + '\n</style>', 1)
+          path.write_text(text, encoding='utf-8')
+          print('Lyrics v8 CSS appended')
+          PY
+
+      - name: Commit and push
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add templates/index.html
+          git diff --cached --quiet && echo 'No changes to commit' && exit 0
+          git commit -m 'fix(ui): make fullscreen lyrics chrome and artist rail non-overlapping'
+          git push origin agent/nomad-vnext-foundation
