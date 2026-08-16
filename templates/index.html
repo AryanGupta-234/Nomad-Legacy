@@ -1468,7 +1468,11 @@
   .lyrics-panel-header{padding:14px 16px;background:linear-gradient(180deg,rgba(14,16,21,.94),rgba(14,16,21,.72));backdrop-filter:blur(24px)}
   .lyrics-panel-inner{padding-left:20px;padding-right:20px}
   .lyrics-pinned-top{margin-left:-20px;margin-right:-20px;padding-left:20px;padding-right:20px;background:linear-gradient(180deg,rgba(13,15,19,.96),rgba(13,15,19,.76))}
-  .lyrics-tabs{scrollbar-width:none}.lyrics-tabs::-webkit-scrollbar{display:none}
+  /* Full .lyrics-tabs rule (overflow-x, flex-wrap, spacing, etc.) lives in
+     one place further down - see the "one source of truth" note there.
+     This used to duplicate scrollbar-width:none here too, which is how a
+     second, later rule quietly re-added flex-wrap:wrap without anyone
+     noticing the two were fighting over the same element. */
   .lyrics-tab{font-weight:700}.lyrics-tab.active{box-shadow:0 0 0 1px rgba(var(--accent-rgb),.16), 0 8px 20px -14px rgba(var(--accent-rgb),.8)}
   .lyrics-panel.fullscreen{background:rgba(5,7,11,.78);backdrop-filter:blur(30px) saturate(135%)}
   .lyrics-panel.fullscreen .lyrics-panel-header{padding:18px 28px 14px;background:linear-gradient(180deg,rgba(6,8,12,.88),rgba(6,8,12,.36))}
@@ -1593,7 +1597,15 @@
      widget instead of above it. Matches the 130px reserved by
      .lyrics-panel-inner for the exact same reason. */
   .lyrics-fs-sidebar{ padding-bottom:130px; }
-  .lyrics-fs-sidebar .sidebar-artist-panel{ position:static; box-shadow:none; background:rgba(255,255,255,0.03); }
+  /* The base .sidebar-artist-panel rule (used elsewhere as a small sticky
+     "Now Playing" widget) sets overflow:hidden, which is correct there but
+     wrong here: this sidebar already scrolls itself (overflow-y:auto
+     above), so overflow:hidden on the panel inside it silently clips
+     whatever doesn't fit - which is why only the artist avatar showed and
+     the name/bio/follow button/Popular list underneath it disappeared.
+     position:static alone (below) never touched the clipping, only the
+     stickiness - overflow needed fixing separately. */
+  .lyrics-fs-sidebar .sidebar-artist-panel{ position:static; overflow:visible; box-shadow:none; background:rgba(255,255,255,0.03); }
   .lyrics-fs-sidebar .sap-cover{ max-height:220px; object-fit:cover; }
   .lyrics-fs-popular .artist-tab-section-title{ margin-top:14px; }
 
@@ -1741,7 +1753,12 @@
 
   /* ---- lyrics panel tab strip: Lyrics / Meaning / Translation / Explain /
      Vocabulary / Story — glass pill tabs, one active at a time ---- */
-  .lyrics-tabs{ display:flex; gap:4px; flex-wrap:wrap; margin:2px 0 14px; padding:4px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:12px; }
+  /* One source of truth for .lyrics-tabs - a duplicate rule used to exist
+     near the top of this stylesheet setting flex-wrap:wrap, which fought
+     with overflow-x:auto below and produced the clipped/truncated tab text
+     ("AI Explana...") instead of either a clean scroll or a real wrap. */
+  .lyrics-tabs{ display:flex; gap:4px; flex-wrap:nowrap; overflow-x:auto; scrollbar-width:none; margin:2px 0 14px; padding:4px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:12px; }
+  .lyrics-tabs::-webkit-scrollbar{ display:none; }
   .lyrics-tab{
     background:transparent; border:none; color:var(--muted); font-family:var(--sans); font-size:11.5px; font-weight:700;
     padding:7px 12px; border-radius:9px; cursor:pointer; transition:background .25s ease, color .25s ease, transform .2s var(--spring);
