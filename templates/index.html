@@ -3248,7 +3248,14 @@
      wired to pywebview via WindowApi. In a plain browser tab (no
      pywebview), the buttons just no-op silently - see the JS guard below. -->
 <div class="app-titlebar" id="app-titlebar">
-  <div class="app-titlebar-drag">
+  <!-- pywebview (WebView2/WinForms backend) does NOT honor the Electron-style
+       -webkit-app-region:drag CSS property - it was never wired up for that
+       backend. It only makes an element draggable via its own JS-injected
+       listener that matches the literal class below (default drag_selector
+       is '.pywebview-drag-region'). Without this class the whole titlebar
+       was inert - the window couldn't be dragged at all, regardless of the
+       app-region CSS still left on it for other webview engines. -->
+  <div class="app-titlebar-drag pywebview-drag-region">
     <div class="app-titlebar-mark">
       <div class="app-titlebar-mark-ring"></div>
       <span>N</span>

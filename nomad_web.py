@@ -8638,8 +8638,34 @@ class WindowApi:
                 win.move(0, 0)
                 win.resize(screen.width, screen.height)
                 win._nomad_maximized = True
+            self._force_repaint(win)
         except Exception:
             pass
+
+    @staticmethod
+    def _force_repaint(win):
+        """Work around the WebView2/WinForms repaint bug this app already
+        documented above: the host frequently fails to redraw its content
+        to the window's new bounds after resize()/move(), leaving stale
+        frames overlapping the real layout (ghosted titlebar, panels stuck
+        mid-transition, desktop showing through gaps at the edges). Nudging
+        the size by a couple of pixels and immediately back forces WebView2
+        to invalidate and repaint against the final bounds. Runs off the
+        main thread with tiny delays so it doesn't block the JS bridge call
+        that triggered it."""
+        import threading, time
+
+        def _nudge():
+            for delay in (0.06, 0.22):
+                time.sleep(delay)
+                try:
+                    w, h = win.width, win.height
+                    win.resize(max(1, w - 2), h)
+                    time.sleep(0.03)
+                    win.resize(w, h)
+                except Exception:
+                    return
+        threading.Thread(target=_nudge, daemon=True).start()
 
     def close(self):
         try:
@@ -8688,9 +8714,39 @@ def main():
         import webview
         _hide_console_window()
         api = WindowApi()
-        webview.create_window("NOMAD — Control Center", url, width=1180, height=860,
-                               resizable=True, frameless=True, easy_drag=False,
-                               background_color="#090b0e", js_api=api)
+        win = webview.create_window("NOMAD — Control Center", url, width=1180, height=860,
+                                     resizable=True, frameless=True, easy_drag=False,
+                                     background_color="#090b0e", js_api=api)
+
+        # Same WebView2/WinForms repaint bug as toggle_maximize (see comment
+        # there), but for ordinary edge-drag resizing: dragging the frameless
+        # window's border can also leave stale, unrepainted content behind.
+        # `_resize_nudging` guards against the nudge's own resize() calls
+        # re-triggering this handler and looping forever, and `_last_resize`
+        # debounces so we only nudge once the user has actually stopped
+        # dragging rather than mid-drag on every intermediate frame.
+        resize_state = {"nudging": False, "generation": 0}
+
+        def _on_user_resized(width, height):
+            if resize_state["nudging"]:
+                return
+            resize_state["generation"] += 1
+            my_gen = resize_state["generation"]
+
+            def _debounced_nudge():
+                time.sleep(0.25)
+                if resize_state["generation"] != my_gen:
+                    return  # a newer resize came in while we waited - skip
+                resize_state["nudging"] = True
+                try:
+                    WindowApi._force_repaint(win)
+                    time.sleep(0.4)
+                finally:
+                    resize_state["nudging"] = False
+
+            threading.Thread(target=_debounced_nudge, daemon=True).start()
+
+        win.events.resized += _on_user_resized
         webview.start()
     except ImportError:
         import webbrowser
