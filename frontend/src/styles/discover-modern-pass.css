@@ -1,0 +1,63 @@
+/* Discover visual upgrade: preserves the legacy DOM and only improves surfaces,
+   spacing and responsive behavior. Runtime marks the real Discover containers. */
+.nomad-discover-surface {
+  min-width: 0;
+  max-width: 100%;
+  overflow: clip;
+  isolation: isolate;
+}
+.nomad-discover-surface .nomad-discover-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: clamp(12px, 1.5vw, 20px);
+  align-items: stretch;
+  width: 100%;
+}
+.nomad-discover-card {
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.075);
+  border-radius: 14px;
+  background: linear-gradient(145deg, rgba(255,255,255,.065), rgba(255,255,255,.025));
+  box-shadow: 0 10px 30px -24px rgba(0,0,0,.9), inset 0 1px rgba(255,255,255,.045);
+  transition: transform .22s ease, border-color .22s ease, background .22s ease, box-shadow .22s ease;
+}
+.nomad-discover-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255,255,255,.14);
+  background: linear-gradient(145deg, rgba(255,255,255,.085), rgba(255,255,255,.035));
+  box-shadow: 0 18px 38px -26px rgba(0,0,0,.95), 0 0 0 1px rgba(255,159,92,.08);
+}
+.nomad-discover-card img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+.nomad-discover-card > * { min-width: 0; }
+.nomad-discover-section {
+  min-width: 0;
+  width: 100%;
+  margin-block: clamp(16px, 2.2vw, 28px);
+}
+.nomad-discover-section > :first-child {
+  min-width: 0;
+}
+.nomad-discover-loading {
+  opacity: .72;
+  pointer-events: none;
+}
+@media (max-width: 900px) {
+  .nomad-discover-surface { overflow-x: hidden; }
+  .nomad-discover-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+}
+@media (max-width: 560px) {
+  .nomad-discover-grid { grid-template-columns: minmax(0, 1fr) !important; gap: 12px; }
+  .nomad-discover-card { border-radius: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nomad-discover-card { transition: none; }
+  .nomad-discover-card:hover { transform: none; }
+}
