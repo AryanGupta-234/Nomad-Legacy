@@ -1,0 +1,60 @@
+name: Frontend Foundation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'frontend/**'
+      - 'tools/integrate_frontend_foundation.py'
+      - '.github/workflows/frontend-foundation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: frontend-foundation-main
+  cancel-in-progress: true
+
+jobs:
+  build-and-integrate:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Build production assets
+        run: npm run build
+
+      - name: Integrate into legacy Flask template
+        working-directory: .
+        run: python tools/integrate_frontend_foundation.py
+
+      - name: Commit generated assets and integration
+        working-directory: .
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add frontend/package-lock.json static/nomad-ui templates/index.html
+          if git diff --cached --quiet; then
+            echo "No generated frontend changes to commit."
+            exit 0
+          fi
+          git commit -m "build(frontend): integrate production foundation"
+          git push
