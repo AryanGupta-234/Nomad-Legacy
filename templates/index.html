@@ -1749,9 +1749,17 @@
   .lyrics-panel-header{ display:flex; align-items:center; gap:8px; padding:18px 22px 10px; flex-shrink:0; position:relative; z-index:2; background:rgb(13,15,19); }
   .lyrics-panel-title{ font-size:12px; font-weight:800; color:var(--accent); text-transform:uppercase; letter-spacing:0.06em; font-family:var(--mono); transition:color .6s ease; flex-shrink:0; }
   .lyrics-panel-sub{
-    font-size:11px; color:var(--dim); margin-left:auto; min-width:0; max-width:150px;
-    overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+    font-size:11px; color:var(--dim); margin-left:auto; min-width:0; max-width:110px;
+    overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex-shrink:1;
   }
+  /* Sync offset controls (only shown while a track has adjustable timing) —
+     these MUST NOT shrink. Previously they had the flexbox default of
+     flex-shrink:1 with no min-width, so once the header got tight (docked
+     470px drawer, or compact/mobile fullscreen padding) the flex layout
+     would crush this element toward zero width instead of shrinking
+     lyrics-panel-sub first, visually "hiding" the −/+0.0s controls and
+     shoving the refresh/fullscreen/close buttons out past the header. */
+  .lyrics-offset-nudge{ flex-shrink:0; white-space:nowrap; }
   .lyrics-fs-btn, .lyrics-close-btn{
     background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.08); border-radius:8px;
     width:26px; height:26px; display:flex; align-items:center; justify-content:center; color:var(--muted); flex-shrink:0;
@@ -9289,32 +9297,31 @@ $("#lyrics-refresh-btn")?.addEventListener("click", async () => {
 // query) so shrinking the window while fullscreen is open correctly drops
 // back to single-column instead of squeezing the sidebar into nothing. ----
 const lyricsPanelEl = $("#lyrics-panel");
+// NOTE: this is a CSS-only "fullscreen" (the .fullscreen class already
+// makes the panel cover inset:0 / 100dvh via the rules above). It used to
+// ALSO call the browser's native Element.requestFullscreen() on top of
+// that. Inside a frameless, custom-titlebar pywebview window that's wrong
+// on two counts: (1) requestFullscreen() only shows the fullscreened
+// element and its descendants — the app's own .app-titlebar (z-index
+// 10000) lives outside #lyrics-panel, so entering native fullscreen could
+// strand it, and depending on the webview engine the OS/webview draws its
+// own fullscreen exit/reload HUD on top of everything, overlapping and
+// visually duplicating our own header icons (the "icons not on full
+// screen lyrics" / stray toolbar in the screenshots). (2) toggling native
+// fullscreen on a frameless resizable window is a known trouble spot for
+// pywebview's underlying WinForms/WebView2 host — the content can fail to
+// repaint to the new bounds, leaving gaps around the window. Dropping the
+// native call and relying purely on the CSS class fixes both.
 async function setLyricsFullscreen(next) {
   const want = !!next;
   lyricsFullscreen = want;
   document.body.classList.toggle("lyrics-fullscreen", want);
   lyricsPanelEl.classList.toggle("fullscreen", want);
   $("#lyrics-fs-btn")?.classList.toggle("active", want);
-  if (want) {
-    try { if (lyricsPanelEl.requestFullscreen && document.fullscreenElement !== lyricsPanelEl) await lyricsPanelEl.requestFullscreen(); } catch (_) {}
-    updateLyricsFsSidebar();
-  } else {
-    try { if (document.fullscreenElement === lyricsPanelEl) await document.exitFullscreen(); } catch (_) {}
-  }
+  if (want) updateLyricsFsSidebar();
   onLyricsPanelResize();
 }
 $("#lyrics-fs-btn")?.addEventListener("click", () => { setLyricsFullscreen(!lyricsFullscreen); });
-document.addEventListener("fullscreenchange", () => {
-  const nativeFs = document.fullscreenElement === lyricsPanelEl;
-  if (!nativeFs && lyricsFullscreen && !lyricsPanelEl.classList.contains("fullscreen")) return;
-  if (!document.fullscreenElement && lyricsFullscreen) {
-    lyricsFullscreen = false;
-    document.body.classList.remove("lyrics-fullscreen");
-    lyricsPanelEl.classList.remove("fullscreen", "compact");
-    $("#lyrics-fs-btn")?.classList.remove("active");
-  }
-  onLyricsPanelResize();
-});
 function onLyricsPanelResize() {
   if (!lyricsPanelEl) return;
   const w = lyricsPanelEl.getBoundingClientRect().width;
@@ -9326,7 +9333,7 @@ if (window.ResizeObserver) {
   window.addEventListener("resize", onLyricsPanelResize);
 }
 document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape" && lyricsFullscreen && document.fullscreenElement !== lyricsPanelEl) {
+  if (e.key === "Escape" && lyricsFullscreen) {
     setLyricsFullscreen(false);
   }
 });

@@ -8610,9 +8610,34 @@ class WindowApi:
             pass
 
     def toggle_maximize(self):
+        """Pseudo-maximize by resizing/moving the window to fill the
+        current screen's work area, rather than calling pywebview's
+        toggle_fullscreen(). toggle_fullscreen() puts the OS into a true
+        borderless fullscreen surface, which is a known trouble spot for
+        frameless windows in pywebview's WinForms/WebView2 host: the
+        content doesn't reliably repaint to the new bounds on
+        maximize/restore, leaving gaps where the desktop shows through
+        around the edges (and the window becomes unresponsive to further
+        resizing until relaunched). Resizing/moving keeps a normal,
+        still-draggable window — just filling the screen — which is what
+        a "maximize" button (square icon) should do anyway; real
+        fullscreen is a different action and this app doesn't expose one
+        for the main window."""
         try:
             import webview
-            webview.windows[0].toggle_fullscreen()
+            win = webview.windows[0]
+            if getattr(win, "_nomad_maximized", False):
+                bounds = getattr(win, "_nomad_restore_bounds", None)
+                if bounds:
+                    win.resize(bounds[2], bounds[3])
+                    win.move(bounds[0], bounds[1])
+                win._nomad_maximized = False
+            else:
+                win._nomad_restore_bounds = (win.x, win.y, win.width, win.height)
+                screen = getattr(win, "screen", None) or webview.screens[0]
+                win.move(0, 0)
+                win.resize(screen.width, screen.height)
+                win._nomad_maximized = True
         except Exception:
             pass
 
