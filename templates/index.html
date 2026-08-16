@@ -1583,7 +1583,14 @@
      content and the mobile sidebar drawer (max 810), not the player. */
   .lyrics-panel.fullscreen{ width:100vw; max-width:100vw; left:0; border-left:none; z-index:850; }
   body.lyrics-fullscreen{ overflow:hidden; }
-  .lyrics-panel.fullscreen{ inset:0; height:100dvh; width:100vw; max-width:100vw; left:0; border-left:none; border-radius:0; z-index:850;
+  /* Starts at top:38px (not inset:0) to clear the fixed .app-titlebar,
+     which is position:fixed + z-index:10000 - always above this panel's
+     z-index:850. With inset:0 the panel's own header (and its refresh/
+     fullscreen/close buttons) rendered underneath the titlebar strip, so
+     the top ~20px of those buttons was clipped off on every fullscreen
+     open. The rest of the app already reserves this via body's
+     padding-top:38px; this just brings fullscreen mode in line with that. */
+  .lyrics-panel.fullscreen{ top:38px; left:0; right:0; bottom:0; height:calc(100dvh - 38px); width:100vw; max-width:100vw; border-left:none; border-radius:0; z-index:850;
     background:rgba(7,8,11,.86); box-shadow:none; }
   .lyrics-panel.fullscreen .lyrics-backdrop{ opacity:.78; filter:blur(72px) saturate(155%) brightness(.48); }
   .lyrics-panel.fullscreen .lyrics-panel-header{ padding:20px 30px 12px; background:linear-gradient(180deg, rgba(9,10,13,.82), rgba(9,10,13,.42)); backdrop-filter:blur(18px) saturate(140%); }
