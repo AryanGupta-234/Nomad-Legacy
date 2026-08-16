@@ -53,7 +53,54 @@
       var(--bg);
     color:var(--text); font-family:var(--sans);
     width:100vw; height:100vh; overflow:hidden;
+    padding-top:38px; /* reserves space for the fixed .app-titlebar below */
   }
+  /* ---- Custom frameless-window titlebar. Replaces the native OS chrome
+     (and the separate console-window titlebar that used to stack on top
+     of it) now that the window is created with frameless=True. Fixed at
+     the very top, translucent + blurred over the app's own background,
+     with a drag region (-webkit-app-region) covering everything except
+     the three window-control buttons. ---- */
+  .app-titlebar{
+    position:fixed; top:0; left:0; right:0; height:38px; z-index:10000;
+    display:flex; align-items:stretch; justify-content:space-between;
+    background:linear-gradient(180deg, rgba(18,20,26,.72), rgba(14,16,21,.52));
+    backdrop-filter:blur(22px) saturate(150%); -webkit-backdrop-filter:blur(22px) saturate(150%);
+    border-bottom:1px solid rgba(255,255,255,0.07);
+    animation:titlebar-in .5s cubic-bezier(.16,1,.3,1);
+  }
+  @keyframes titlebar-in{ from{ transform:translateY(-100%); opacity:0; } to{ transform:translateY(0); opacity:1; } }
+  .app-titlebar-drag{
+    flex:1; min-width:0; display:flex; align-items:center; gap:9px; padding:0 14px;
+    -webkit-app-region:drag; app-region:drag; cursor:default;
+  }
+  .app-titlebar-mark{
+    position:relative; width:18px; height:18px; display:grid; place-items:center; flex-shrink:0;
+    font-size:10px; font-weight:900; color:#fff; font-family:var(--sans);
+  }
+  .app-titlebar-mark-ring{
+    position:absolute; inset:0; border-radius:50%;
+    background:linear-gradient(135deg, var(--accent), rgba(var(--accent-rgb),.35));
+    box-shadow:0 0 0 1px rgba(255,255,255,.12), 0 0 14px -2px rgba(var(--accent-rgb),.7);
+    animation:titlebar-mark-pulse 3.2s ease-in-out infinite;
+  }
+  @keyframes titlebar-mark-pulse{ 0%,100%{ box-shadow:0 0 0 1px rgba(255,255,255,.12), 0 0 14px -2px rgba(var(--accent-rgb),.7); } 50%{ box-shadow:0 0 0 1px rgba(255,255,255,.18), 0 0 20px 1px rgba(var(--accent-rgb),.9); } }
+  .app-titlebar-mark span{ position:relative; z-index:1; }
+  .app-titlebar-title{
+    font-size:11.5px; font-weight:700; letter-spacing:.01em; color:var(--text);
+    overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+  }
+  .app-titlebar-sub{ color:var(--muted); font-weight:500; }
+  .app-titlebar-controls{ display:flex; align-items:stretch; -webkit-app-region:no-drag; app-region:no-drag; }
+  .app-titlebar-btn{
+    width:44px; height:38px; display:grid; place-items:center; border:none; background:transparent;
+    color:var(--muted); cursor:pointer; transition:background .16s ease, color .16s ease;
+  }
+  .app-titlebar-btn svg{ width:10px; height:10px; }
+  .app-titlebar-btn:hover{ background:rgba(255,255,255,.08); color:var(--text); }
+  .app-titlebar-btn:active{ background:rgba(255,255,255,.14); }
+  .app-titlebar-btn-close:hover{ background:#e81123; color:#fff; }
+  .app-titlebar-btn-close:active{ background:#c50f1f; }
   body::before{
     content:''; position:fixed; inset:0; pointer-events:none; z-index:-1;
     background-image:
@@ -3183,6 +3230,50 @@
 </style>
 </head>
 <body>
+
+<!-- Custom frameless-window titlebar. The app window is now created with
+     frameless=True (see nomad_web.py) specifically so this can exist -
+     previously the OS drew its own native titlebar on top of/next to a
+     separate console window's titlebar, which is what caused the stacked/
+     cut-off "C:\...\python.exe" bar. This replaces both with one clean,
+     draggable, animated bar and real minimize/maximize/close buttons
+     wired to pywebview via WindowApi. In a plain browser tab (no
+     pywebview), the buttons just no-op silently - see the JS guard below. -->
+<div class="app-titlebar" id="app-titlebar">
+  <div class="app-titlebar-drag">
+    <div class="app-titlebar-mark">
+      <div class="app-titlebar-mark-ring"></div>
+      <span>N</span>
+    </div>
+    <span class="app-titlebar-title">NOMAD <span class="app-titlebar-sub">— Control Center</span></span>
+  </div>
+  <div class="app-titlebar-controls">
+    <button class="app-titlebar-btn" id="tb-minimize" title="Minimize" aria-label="Minimize">
+      <svg viewBox="0 0 10 10"><path d="M1.5 5h7" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>
+    </button>
+    <button class="app-titlebar-btn" id="tb-maximize" title="Maximize" aria-label="Maximize">
+      <svg viewBox="0 0 10 10"><rect x="1.75" y="1.75" width="6.5" height="6.5" rx="1" stroke="currentColor" stroke-width="1.1" fill="none"/></svg>
+    </button>
+    <button class="app-titlebar-btn app-titlebar-btn-close" id="tb-close" title="Close" aria-label="Close">
+      <svg viewBox="0 0 10 10"><path d="M1.8 1.8l6.4 6.4M8.2 1.8l-6.4 6.4" stroke="currentColor" stroke-width="1.15" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</div>
+<script>
+  // Wire the custom titlebar to pywebview's JS bridge. pywebviewready only
+  // fires when actually running inside the native app window - guarding on
+  // it (plus a plain click fallback) means the same HTML also degrades
+  // harmlessly to inert buttons if this page is ever opened in a normal
+  // browser tab instead.
+  (function () {
+    const call = (fn) => { try { window.pywebview && window.pywebview.api && window.pywebview.api[fn](); } catch (e) {} };
+    document.getElementById("tb-minimize")?.addEventListener("click", () => call("minimize"));
+    document.getElementById("tb-maximize")?.addEventListener("click", () => call("toggle_maximize"));
+    document.getElementById("tb-close")?.addEventListener("click", () => call("close"));
+    document.getElementById("tb-maximize")?.addEventListener("dblclick", (e) => e.stopPropagation());
+    document.querySelector(".app-titlebar-drag")?.addEventListener("dblclick", () => call("toggle_maximize"));
+  })();
+</script>
 
 <div id="splash">
   <div class="splash-logo">

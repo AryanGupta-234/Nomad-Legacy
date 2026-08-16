@@ -8598,6 +8598,49 @@ def api_storage_keep():
 # LAUNCH
 # =============================================================================
 
+class WindowApi:
+    """JS-callable bridge for the custom titlebar controls. Needed because
+    the window is now frameless (see below) - with no OS chrome, minimize/
+    maximize/close have to be wired up by hand from the HTML buttons."""
+    def minimize(self):
+        try:
+            import webview
+            webview.windows[0].minimize()
+        except Exception:
+            pass
+
+    def toggle_maximize(self):
+        try:
+            import webview
+            webview.windows[0].toggle_fullscreen()
+        except Exception:
+            pass
+
+    def close(self):
+        try:
+            import webview
+            webview.windows[0].destroy()
+        except Exception:
+            pass
+
+
+def _hide_console_window():
+    """Launching via `python nomad_web.py` (rather than pythonw) spawns a
+    separate OS console window, whose own titlebar (showing the raw
+    python.exe path) sits stacked directly on top of the app's own window -
+    that's the double titlebar / cut-off-path look. ConsoleTee still needs
+    somewhere to write, so this only hides the console window, it doesn't
+    stop output from being captured."""
+    if os.name != "nt":
+        return
+    try:
+        hwnd = ctypes.windll.kernel32.GetConsoleWindow()
+        if hwnd:
+            ctypes.windll.user32.ShowWindow(hwnd, 0)  # SW_HIDE
+    except Exception:
+        pass
+
+
 def run_flask():
     app.run(host="127.0.0.1", port=PORT, threaded=True, use_reloader=False)
 
@@ -8618,8 +8661,11 @@ def main():
     url = f"http://127.0.0.1:{PORT}"
     try:
         import webview
+        _hide_console_window()
+        api = WindowApi()
         webview.create_window("NOMAD — Control Center", url, width=1180, height=860,
-                               resizable=False, background_color="#090b0e")
+                               resizable=True, frameless=True, easy_drag=False,
+                               background_color="#090b0e", js_api=api)
         webview.start()
     except ImportError:
         import webbrowser
