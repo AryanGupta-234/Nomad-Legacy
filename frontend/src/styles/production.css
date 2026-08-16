@@ -1,0 +1,106 @@
+@layer base, layout, components, utilities;
+
+@layer base {
+  .nomad-modern-runtime {
+    --nomad-header-height: var(--nomad-measured-header, 38px);
+    --nomad-player-clearance: var(--nomad-measured-player, 96px);
+    --nomad-content-inline-padding: clamp(16px, 2.4vw, 40px);
+    --nomad-panel-gap: clamp(12px, 1.5vw, 24px);
+    --nomad-control-height: 40px;
+    --nomad-focus-ring: 0 0 0 3px rgba(var(--accent-rgb, 92, 200, 255), .22);
+  }
+
+  .nomad-modern-runtime :where(button, [role="button"], a, input, select, textarea) {
+    min-inline-size: 0;
+  }
+
+  .nomad-modern-runtime :where(input, select, textarea) {
+    max-inline-size: 100%;
+  }
+
+  .nomad-modern-runtime :where(img, video) {
+    block-size: auto;
+    object-fit: cover;
+  }
+
+  .nomad-modern-runtime :where(button, a, input, select, textarea):focus-visible {
+    box-shadow: var(--nomad-focus-ring);
+  }
+}
+
+@layer layout {
+  .nomad-modern-runtime :where(.lyrics-panel, .lyrics-panel.fullscreen) {
+    min-inline-size: 0;
+    min-block-size: 0;
+  }
+
+  .nomad-modern-runtime :where(.lyrics-panel.fullscreen) {
+    max-block-size: calc(100dvh - var(--nomad-header-height));
+  }
+
+  .nomad-modern-runtime :where(.lyrics-panel-body-row, .lyrics-panel-inner, .lyrics-panel-body) {
+    min-inline-size: 0;
+    min-block-size: 0;
+  }
+
+  .nomad-modern-runtime :where(.lyrics-panel-body-row) {
+    contain: layout style;
+  }
+
+  .nomad-modern-runtime :where(.lyrics-panel-body, .lyrics-content, .lyrics-scroll, .lyrics-fs-sidebar) {
+    scrollbar-gutter: stable;
+    overscroll-behavior: contain;
+  }
+
+  .nomad-modern-runtime :where(.lyrics-fs-sidebar) {
+    min-inline-size: 0;
+    min-block-size: 0;
+  }
+
+  @container (max-width: 760px) {
+    .nomad-modern-runtime :where(.lyrics-panel-body-row) {
+      grid-template-columns: minmax(0, 1fr) !important;
+    }
+
+    .nomad-modern-runtime :where(.lyrics-fs-sidebar) {
+      max-block-size: none;
+    }
+  }
+}
+
+@layer components {
+  .nomad-modern-runtime :where(.app-titlebar) {
+    contain: layout paint style;
+  }
+
+  .nomad-modern-runtime :where(.app-titlebar, .lyrics-panel.fullscreen) {
+    isolation: isolate;
+  }
+}
+
+@layer utilities {
+  .nomad-modern-runtime .nomad-overflow-safe {
+    min-inline-size: 0;
+    max-inline-size: 100%;
+    overflow-wrap: anywhere;
+  }
+
+  .nomad-modern-runtime .nomad-flow-safe {
+    min-inline-size: 0;
+    min-block-size: 0;
+  }
+}
+
+@media (max-width: 900px) {
+  .nomad-modern-runtime {
+    --nomad-content-inline-padding: clamp(12px, 3vw, 24px);
+    --nomad-panel-gap: 12px;
+  }
+}
+
+@media (max-width: 600px) {
+  .nomad-modern-runtime {
+    --nomad-content-inline-padding: 12px;
+    --nomad-panel-gap: 10px;
+  }
+}
