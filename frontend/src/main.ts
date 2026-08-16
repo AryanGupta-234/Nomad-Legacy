@@ -1,5 +1,6 @@
 import './styles/foundation.css';
 import './styles/production.css';
+import './styles/lyrics-discover-overhaul.css';
 
 /**
  * NOMAD frontend foundation.
