@@ -6,10 +6,14 @@ export default defineConfig({
   build: {
     outDir: '../static/nomad-ui',
     emptyOutDir: true,
-    manifest: true,
     sourcemap: true,
-    cssCodeSplit: true,
     target: 'baseline-widely-available',
+    lib: {
+      entry: 'src/main.ts',
+      formats: ['es'],
+      fileName: () => 'nomad-ui.js',
+      cssFileName: 'nomad-ui',
+    },
   },
   server: {
     strictPort: true,
