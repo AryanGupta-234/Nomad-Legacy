@@ -1,0 +1,69 @@
+/* Discover visual enhancement: preserve the legacy structure, improve surfaces and hierarchy. */
+.nomad-modern-runtime .discover-modern-surface,
+.nomad-modern-runtime [data-discover-modern] {
+  container-type: inline-size;
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.nomad-modern-runtime [data-discover-modern] .discover-modern-card {
+  min-width: 0;
+  overflow: hidden;
+  border-radius: 16px;
+  border: 1px solid color-mix(in srgb, currentColor 10%, transparent);
+  background: color-mix(in srgb, currentColor 5%, transparent);
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.nomad-modern-runtime [data-discover-modern] .discover-modern-card:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, currentColor 18%, transparent);
+  box-shadow: 0 12px 28px rgb(0 0 0 / 14%);
+}
+
+.nomad-modern-runtime [data-discover-modern] .discover-modern-artwork {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  background: color-mix(in srgb, currentColor 8%, transparent);
+}
+
+.nomad-modern-runtime [data-discover-modern] .discover-modern-content {
+  min-width: 0;
+  padding: 12px 13px 14px;
+}
+
+.nomad-modern-runtime [data-discover-modern] .discover-modern-title,
+.nomad-modern-runtime [data-discover-modern] .discover-modern-artist {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nomad-modern-runtime [data-discover-modern] .discover-modern-title {
+  font-weight: 650;
+  line-height: 1.25;
+}
+
+.nomad-modern-runtime [data-discover-modern] .discover-modern-artist {
+  margin-top: 4px;
+  opacity: .66;
+  font-size: .9em;
+}
+
+.nomad-modern-runtime [data-discover-modern] .discover-modern-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 9px;
+  opacity: .55;
+  font-size: .78em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nomad-modern-runtime [data-discover-modern] .discover-modern-card { transition: none; }
+}
