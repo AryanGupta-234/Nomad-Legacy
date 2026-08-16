@@ -1,0 +1,265 @@
+/*
+ * NOMAD Lyrics + Discover production layout pass.
+ * Visual language intentionally stays with the existing UI; this file only
+ * establishes deterministic layout ownership, sizing and overflow rules.
+ */
+@layer layout, components, responsive;
+
+@layer layout {
+  .nomad-modern-runtime {
+    --nomad-lyrics-header-gap: clamp(10px, 1.25vw, 18px);
+    --nomad-lyrics-sidebar: clamp(300px, 25vw, 380px);
+    --nomad-player-clearance-safe: max(var(--nomad-player-clearance, 96px), 96px);
+  }
+
+  /* Fullscreen Lyrics owns the viewport below the real window titlebar. */
+  .nomad-modern-runtime .lyrics-panel.fullscreen {
+    position: fixed !important;
+    inset: var(--nomad-header-height, 38px) 0 0 0 !important;
+    width: 100% !important;
+    height: calc(var(--nomad-viewport-height, 100dvh) - var(--nomad-header-height, 38px)) !important;
+    max-height: none !important;
+    min-height: 0 !important;
+    display: grid !important;
+    grid-template-rows: auto minmax(0, 1fr) !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+    isolation: isolate;
+  }
+
+  /* Any fullscreen Lyrics header/chrome spans the whole page, never just
+     the lyric column. The child rules are deliberately broad because the
+     legacy page has accumulated several generations of header wrappers. */
+  .nomad-modern-runtime .lyrics-panel.fullscreen :where(
+    [class*="lyrics-panel-header"],
+    [class*="lyrics-header"],
+    [class*="lyrics-top"],
+    [class*="lyrics-toolbar"]
+  ) {
+    grid-column: 1 / -1 !important;
+    min-width: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .nomad-modern-runtime .lyrics-panel.fullscreen :where(
+    .lyrics-panel-body-row,
+    [class*="lyrics-panel-body-row"]
+  ) {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(300px, var(--nomad-lyrics-sidebar)) !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    overflow: hidden !important;
+    align-items: stretch !important;
+  }
+
+  /* The lyric column is a bounded viewport. Nothing inside it may establish
+     an accidental page-level overflow context. */
+  .nomad-modern-runtime .lyrics-panel.fullscreen :where(
+    .lyrics-panel-inner,
+    [class*="lyrics-panel-inner"]
+  ) {
+    min-width: 0 !important;
+    min-height: 0 !important;
+    height: 100% !important;
+    display: grid !important;
+    grid-template-rows: auto minmax(0, 1fr) auto !important;
+    overflow: hidden !important;
+  }
+
+  .nomad-modern-runtime .lyrics-panel.fullscreen :where(
+    .lyrics-panel-body,
+    [class*="lyrics-panel-body"]
+  ) {
+    min-width: 0 !important;
+    min-height: 0 !important;
+    height: 100% !important;
+    overflow: auto !important;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable both-edges;
+    padding-bottom: var(--nomad-player-clearance-safe) !important;
+  }
+
+  /* Right rail: normal vertical flow, independent scroll, no clipping by a
+     fixed artist card. */
+  .nomad-modern-runtime .lyrics-panel.fullscreen :where(
+    .lyrics-fs-sidebar,
+    [class*="lyrics-fs-sidebar"],
+    [class*="lyrics-sidebar"]
+  ) {
+    position: relative !important;
+    inset: auto !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-height: none !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    scrollbar-gutter: stable;
+    overscroll-behavior: contain;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: var(--nomad-lyrics-header-gap) !important;
+    padding: clamp(14px, 1.6vw, 24px) clamp(14px, 1.6vw, 24px) var(--nomad-player-clearance-safe) !important;
+  }
+
+  /* Artist identity and song lists are siblings in normal flow. Prevent
+     artwork/info blocks from consuming the entire rail height. */
+  .nomad-modern-runtime .lyrics-panel.fullscreen :where(
+    [class*="artist-panel"],
+    [class*="artist-info"],
+    [class*="artist-card"]
+  ) {
+    position: relative !important;
+    flex: 0 0 auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  .nomad-modern-runtime .lyrics-panel.fullscreen :where(
+    [class*="popular"],
+    [class*="artist-songs"],
+    [class*="song-list"],
+    [class*="track-list"]
+  ) {
+    position: relative !important;
+    flex: 0 0 auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+    width: 100% !important;
+  }
+
+  /* Discover: every responsive widget becomes a grid item with a bounded
+     minimum width, eliminating the classic flex-wrap/overflow collision. */
+  .nomad-modern-runtime :where(
+    [class*="discover-grid"],
+    [class*="discover-list"],
+    [class*="discover-content"],
+    [class*="discover-sections"],
+    [data-discover-grid]
+  ) {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)) !important;
+    gap: clamp(14px, 1.6vw, 24px) !important;
+    min-width: 0 !important;
+    width: 100% !important;
+    align-items: stretch !important;
+  }
+
+  .nomad-modern-runtime :where(
+    [class*="discover-grid"] > *,
+    [class*="discover-list"] > *,
+    [class*="discover-content"] > *,
+    [data-discover-grid] > *
+  ) {
+    min-width: 0 !important;
+    max-width: 100% !important;
+    overflow: hidden;
+  }
+
+  /* Cards/widgets cannot push their parent wider than the available track. */
+  .nomad-modern-runtime :where(
+    [class*="discover"],
+    [class*="widget"]
+  ) :where(img, video, canvas, iframe) {
+    max-width: 100% !important;
+  }
+}
+
+@layer components {
+  /* A consistent internal rhythm for all Lyrics chrome without redesigning
+     its colors, typography or controls. */
+  .nomad-modern-runtime .lyrics-panel.fullscreen :where(
+    input, select, button
+  ) {
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .nomad-modern-runtime .lyrics-panel.fullscreen :where(
+    [class*="lyrics-tab"],
+    [class*="lyrics-tabs"],
+    [class*="lyrics-search"]
+  ) {
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .nomad-modern-runtime .lyrics-panel.fullscreen :where(
+    .lyrics-panel-body,
+    .lyrics-fs-sidebar
+  ) {
+    scrollbar-width: thin;
+  }
+
+  .nomad-modern-runtime :where(
+    [class*="discover"], [class*="widget"]
+  ) {
+    box-sizing: border-box;
+    min-width: 0;
+  }
+}
+
+@layer responsive {
+  @media (max-width: 1000px) {
+    .nomad-modern-runtime .lyrics-panel.fullscreen :where(
+      .lyrics-panel-body-row,
+      [class*="lyrics-panel-body-row"]
+    ) {
+      grid-template-columns: minmax(0, 1fr) minmax(260px, 32vw) !important;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .nomad-modern-runtime .lyrics-panel.fullscreen :where(
+      .lyrics-panel-body-row,
+      [class*="lyrics-panel-body-row"]
+    ) {
+      grid-template-columns: minmax(0, 1fr) !important;
+    }
+
+    .nomad-modern-runtime .lyrics-panel.fullscreen :where(
+      .lyrics-fs-sidebar,
+      [class*="lyrics-fs-sidebar"],
+      [class*="lyrics-sidebar"]
+    ) {
+      display: none !important;
+    }
+
+    .nomad-modern-runtime :where(
+      [class*="discover-grid"],
+      [class*="discover-list"],
+      [class*="discover-content"],
+      [data-discover-grid]
+    ) {
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .nomad-modern-runtime :where(
+      [class*="discover-grid"],
+      [class*="discover-list"],
+      [class*="discover-content"],
+      [data-discover-grid]
+    ) {
+      grid-template-columns: minmax(0, 1fr) !important;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nomad-modern-runtime .lyrics-panel.fullscreen * {
+      scroll-behavior: auto !important;
+      animation-duration: .001ms !important;
+      transition-duration: .001ms !important;
+    }
+  }
+}
